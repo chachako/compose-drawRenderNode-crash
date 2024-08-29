@@ -19,11 +19,8 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -113,13 +110,13 @@ private fun Content(
       }
     )
 
-    SharedTransitionLayout {
-      Box(
-        modifier = Modifier
-          .weight(1f)
-          .fillMaxWidth()
-          .background(color)
-      ) {
+    SharedTransitionLayout(
+      modifier = Modifier
+        .weight(1f)
+        .fillMaxWidth()
+        .background(color)
+    ) {
+      Box {
         androidx.compose.animation.AnimatedVisibility(
           visible = phase == Phase.First,
           enter = EnterTransition.None,
@@ -167,6 +164,12 @@ private fun Content(
         onClick = { phase = Phase.Third }
       ) {
         Text(text = "stop")
+      }
+      Button(
+        enabled = phase == Phase.Third,
+        onClick = { phase = Phase.First }
+      ) {
+        Text(text = "reset")
       }
     }
   }
