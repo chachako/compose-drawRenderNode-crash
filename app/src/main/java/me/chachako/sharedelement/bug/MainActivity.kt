@@ -20,6 +20,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -97,8 +98,6 @@ private fun Content(
   composeView: ComposeView,
 ) {
   var phase by remember { mutableStateOf(Phase.First) }
-  val transition = updateTransition(phase)
-
 
   if (phase == Phase.Third) LaunchedEffect(Unit) {
     delay(600)
@@ -106,21 +105,13 @@ private fun Content(
   }
 
   Column(modifier = Modifier.fillMaxSize()) {
-    val color by transition.animateColor {
-      when (it) {
+    val color by animateColorAsState(
+      when (phase) {
         Phase.First -> Color.Red
         Phase.Second -> Color.Blue
         Phase.Third -> Color.Green
       }
-    }
-
-    val scale by transition.animateFloat {
-      when (it) {
-        Phase.First -> 1f
-        Phase.Second -> 1.1f
-        Phase.Third -> 0.8f
-      }
-    }
+    )
 
     SharedTransitionLayout {
       Box(
@@ -128,7 +119,6 @@ private fun Content(
           .weight(1f)
           .fillMaxWidth()
           .background(color)
-          .graphicsLayer { scaleX = scale; scaleY = scale }
       ) {
         androidx.compose.animation.AnimatedVisibility(
           visible = phase == Phase.First,
