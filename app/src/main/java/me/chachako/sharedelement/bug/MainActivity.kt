@@ -110,13 +110,8 @@ private fun Content(
       }
     )
 
-    SharedTransitionLayout(
-      modifier = Modifier
-        .weight(1f)
-        .fillMaxWidth()
-        .background(color)
-    ) {
-      Box {
+    SharedTransitionLayout(modifier = Modifier.weight(1f).fillMaxWidth()) {
+      Box(modifier = Modifier.fillMaxSize().background(color)) {
         androidx.compose.animation.AnimatedVisibility(
           visible = phase == Phase.First,
           enter = EnterTransition.None,
@@ -189,7 +184,7 @@ fun SharedTransitionScope.SharedText(
     rememberSharedContentState(key = 0),
     animatedVisibilityScope = animatedVisibilityScope,
     boundsTransform = { _, _ ->
-      tween(durationMillis = 10000)
+      tween(durationMillis = 5000)
     }
   )
 )
